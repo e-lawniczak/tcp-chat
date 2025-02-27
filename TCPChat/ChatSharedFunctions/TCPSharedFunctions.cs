@@ -34,13 +34,14 @@ namespace ChatSharedUtilities
                 return true;
             }
         }
-        public static void CleanupClient(TcpClient client)
+        public static void CleanupClient(TcpClient client, NetworkStream? stream = null)
         {
             client.GetStream().Close();
             client.Close();
+            stream?.Close();
         }
 
     }
 }
-  
+
 
