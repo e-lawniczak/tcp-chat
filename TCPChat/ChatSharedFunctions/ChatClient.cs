@@ -1,5 +1,5 @@
 ﻿// See https://aka.ms/new-console-template for more information
-
+// https://16bpp.net/tutorials/csharp-networking/03c/
 using ChatSharedUtilities;
 using System.Net.Sockets;
 
