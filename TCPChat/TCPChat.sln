@@ -9,7 +9,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TCPClient", "TCPChatClient\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TCPListener", "TCPChatListener\TCPListener.csproj", "{524652A1-A500-4E54-B652-AAFBFBBE2A2E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChatSharedFunctions", "ChatSharedFunctions\ChatSharedFunctions.csproj", "{49DF4C88-9DB0-4A69-A5C9-86963893F184}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChatSharedUtilities", "ChatSharedFunctions\ChatSharedUtilities.csproj", "{49DF4C88-9DB0-4A69-A5C9-86963893F184}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

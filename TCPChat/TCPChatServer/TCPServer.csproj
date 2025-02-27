@@ -8,7 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ChatSharedFunctions\ChatSharedFunctions.csproj" />
+    <ProjectReference Include="..\ChatSharedFunctions\ChatSharedUtilities.csproj" />
   </ItemGroup>
 
 </Project>

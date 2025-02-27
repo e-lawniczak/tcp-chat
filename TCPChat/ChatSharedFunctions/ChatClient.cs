@@ -3,7 +3,7 @@
 using ChatSharedUtilities;
 using System.Net.Sockets;
 
-internal class ChatClient
+public class ChatClient
 {
     public ClientType Type { get; set; }
     public TcpClient? Client { get; set; }
