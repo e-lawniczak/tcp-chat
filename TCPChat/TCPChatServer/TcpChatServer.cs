@@ -86,7 +86,7 @@ internal class TcpChatServer
 
     private void CheckNewConnection()
     {
-        ChatClient newClient = _connectionHandler.HandleNewConnection(_listener.AcceptTcpClient());
+        ChatClient newClient = _connectionHandler.HandleNewConnection(ref _listener);
 
         if (newClient.Type.Equals(ClientType.Viewer) && newClient.Client != null)
         {
@@ -137,7 +137,8 @@ internal class TcpChatServer
         {
             if (TCPSharedFunctions.IsClientDisconnected(viewer))
             {
-                Console.WriteLine($"Viewer {viewer.Client.RemoteEndPoint}");
+                Console.WriteLine($"Viewer {viewer.Client.RemoteEndPoint} disconnected.");
+                _messageQueue.Enqueue(String.Format($"{viewer.Client.RemoteEndPoint} has joined the chat."));
 
                 _viewers.Remove(viewer);
                 TCPSharedFunctions.CleanupClient(viewer);
@@ -148,8 +149,9 @@ internal class TcpChatServer
         {
             if (TCPSharedFunctions.IsClientDisconnected(messenger))
             {
-                Console.WriteLine($"Messenger {messenger.Client.RemoteEndPoint}");
-
+                Console.WriteLine($"Messenger {messenger.Client.RemoteEndPoint} disconnected.");
+                _messageQueue.Enqueue(String.Format($"{_names[messenger]} has joined the chat."));
+                _names.Remove(messenger);
                 _messengers.Remove(messenger);
                 TCPSharedFunctions.CleanupClient(messenger);
             }

@@ -21,9 +21,9 @@ internal class ConnectionHandler
         _names = names;
     }
 
-    internal ChatClient HandleNewConnection(TcpClient tcpClient)
+    internal ChatClient HandleNewConnection(ref TcpListener listener)
     {
-        TcpClient newClient = tcpClient;
+        TcpClient newClient = listener.AcceptTcpClient();
         newClient.SendBufferSize = _bufferSize;
         newClient.ReceiveBufferSize = _bufferSize;
         NetworkStream netStream = newClient.GetStream();
