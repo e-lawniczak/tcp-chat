@@ -48,6 +48,7 @@ internal class TcpChatListener
             Console.WriteLine($"Connected to the server at {endPoint}");
 
             MsgStream = Client.GetStream();
+            MsgStream.ReadTimeout = 30;
             byte[] msgBuffer = Encoding.UTF8.GetBytes("viewer");
             MsgStream.Write(msgBuffer, 0, msgBuffer.Length);
 
@@ -60,7 +61,6 @@ internal class TcpChatListener
             {
                 CleanUpNetworkResources();
                 Console.WriteLine($"Wasn't able to connect to server at {endPoint}.");
-
             }
         }
     }
@@ -81,10 +81,9 @@ internal class TcpChatListener
             int messageLength = Client.Available;
             if (messageLength > 0)
             {
-
                 byte[] msgBuffer = new byte[messageLength];
-                MsgStream.Read(msgBuffer, 0, messageLength);   // Blocks
 
+                MsgStream.Read(msgBuffer, 0, messageLength);
 
                 string msg = Encoding.UTF8.GetString(msgBuffer);
                 Console.WriteLine(msg);

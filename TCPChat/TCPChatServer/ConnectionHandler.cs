@@ -27,6 +27,7 @@ internal class ConnectionHandler
         newClient.SendBufferSize = _bufferSize;
         newClient.ReceiveBufferSize = _bufferSize;
         NetworkStream netStream = newClient.GetStream();
+        netStream.ReadTimeout = 30;
         EndPoint? endPoint = newClient.Client.RemoteEndPoint;
         Console.WriteLine($"New connection from {endPoint}");
 
@@ -35,8 +36,6 @@ internal class ConnectionHandler
 
         if (bytesRead > 0)
         {
-
-
             string msg = Encoding.UTF8.GetString(msgbuffer, 0, bytesRead);
 
             if (msg.Equals("viewer"))
@@ -49,7 +48,10 @@ internal class ConnectionHandler
             }
             else
             {
-                Console.WriteLine("Wasn't able to identify {0} as a Viewer or Messenger.", endPoint);
+                Console.WriteLine(
+                    "Wasn't able to identify {0} as a Viewer or Messenger.",
+                    endPoint
+                );
                 TCPSharedFunctions.CleanupClient(newClient);
                 return new ChatClient
                 {
@@ -72,7 +74,13 @@ internal class ConnectionHandler
         };
     }
 
-    private ChatClient HandleViewer(string msg, byte[] msgbuffer, EndPoint? endPoint, TcpClient newClient, NetworkStream netStream)
+    private ChatClient HandleViewer(
+        string msg,
+        byte[] msgbuffer,
+        EndPoint? endPoint,
+        TcpClient newClient,
+        NetworkStream netStream
+    )
     {
         _connected = true;
         Console.WriteLine("{0} is a Viewer.", endPoint);
@@ -80,11 +88,7 @@ internal class ConnectionHandler
         msg = String.Format($"Welcome to the {_serverName} Chat Server!");
         msgbuffer = Encoding.UTF8.GetBytes(msg);
         netStream.Write(msgbuffer, 0, msgbuffer.Length);
-        return new ChatClient
-        {
-            Type = ClientType.Viewer,
-            Client = newClient
-        };
+        return new ChatClient { Type = ClientType.Viewer, Client = newClient };
     }
 
     private ChatClient HandleMessenger(string msg, EndPoint? endPoint, TcpClient newClient)

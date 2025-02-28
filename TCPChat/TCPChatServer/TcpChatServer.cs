@@ -10,11 +10,7 @@ using System.Xml.Linq;
 
 internal class TcpChatServer
 {
-    public bool Running
-    {
-        get;
-        private set;
-    }
+    public bool Running { get; private set; }
     private string _serverName;
     private int _port;
     private TcpListener _listener;
@@ -35,11 +31,9 @@ internal class TcpChatServer
         _names = new Dictionary<TcpClient, string>();
         _messageQueue = new Queue<string>();
 
-
         _connectionHandler = new ConnectionHandler(_bufferSize, _serverName, _names);
         _listener = new TcpListener(IPAddress.Any, _port);
     }
-
 
     public void Shutdown()
     {
@@ -97,7 +91,6 @@ internal class TcpChatServer
             _messengers.Add(newClient.Client);
             _names.Add(newClient.Client, newClient.Name);
             _messageQueue.Enqueue(String.Format($"{newClient.Name} has joined the chat."));
-
         }
     }
 
@@ -123,6 +116,7 @@ internal class TcpChatServer
             if (messageLength > 0)
             {
                 byte[] msgBuffer = new byte[messageLength];
+                messenger.GetStream().ReadTimeout = 30;
                 messenger.GetStream().Read(msgBuffer, 0, msgBuffer.Length);
 
                 string msg = $"{_names[messenger]}: {Encoding.UTF8.GetString(msgBuffer)}";
@@ -138,7 +132,9 @@ internal class TcpChatServer
             if (TCPSharedFunctions.IsClientDisconnected(viewer))
             {
                 Console.WriteLine($"Viewer {viewer.Client.RemoteEndPoint} disconnected.");
-                _messageQueue.Enqueue(String.Format($"{viewer.Client.RemoteEndPoint} has joined the chat."));
+                _messageQueue.Enqueue(
+                    String.Format($"{viewer.Client.RemoteEndPoint} has joined the chat.")
+                );
 
                 _viewers.Remove(viewer);
                 TCPSharedFunctions.CleanupClient(viewer);
@@ -157,8 +153,4 @@ internal class TcpChatServer
             }
         }
     }
-
-
-
-
 }
